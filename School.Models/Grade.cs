@@ -9,8 +9,7 @@ namespace School.Models
     public class Grade
     {
         public int Id { get; set; } 
-        public string? ClassName { get; set; }
-        public string? Section { get; set; }
-        public int NumberOfStudents { get; set; }
+        public string? Name { get; set; }
+        public List<string>? Sections { get; set; }
     }
 }
