@@ -35,7 +35,7 @@ namespace School.Data.Repository
 
         virtual public async Task<List<T>> GetAll()
         {
-            return await entities.ToListAsync();
+            return await entities.AsNoTracking().ToListAsync();
         }
 
         virtual public async Task<T?> GetBy(Expression<Func<T, bool>> predicate)
@@ -45,7 +45,7 @@ namespace School.Data.Repository
 
         public async Task<List<T>> GetAllBy(Expression<Func<T, bool>> predicate)
         {
-            return await entities.Where(predicate).ToListAsync();
+            return await entities.Where(predicate).AsNoTracking().ToListAsync();
         }
     }
 }

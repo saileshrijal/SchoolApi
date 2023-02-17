@@ -9,11 +9,11 @@ namespace School.Models
         public int GradeId { get; set; }
         public Grade? Grade { get; set; }   
         public int RollNo { get; set; }
-        public int MotherId { get; set; }
+        public int? MotherId { get; set; }
         public Parent? Mother { get; set; }
-        public int FatherId { get; set; }
+        public int? FatherId { get; set; }
         public Parent? Father { get; set; }
-        public int GuardianId { get; set; }
+        public int? GuardianId { get; set; }
         public Parent? Guardian { get; set; }
         public int BusStopId { get; set; }
         public BusStop? BusStop { get; set; }

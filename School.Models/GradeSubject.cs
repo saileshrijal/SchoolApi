@@ -10,8 +10,8 @@ namespace School.Models
     {
         public int Id { get; set; }
         public int GradeId { get; set; }
-        public Grade? Grade { get; set; }
+        public Grade? Grade { get; set; } 
         public int SubjectId { get; set; }
-        public Grade? Subject { get; set; }
+        public Subject? Subject { get; set; }
     }
 }
