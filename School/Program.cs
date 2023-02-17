@@ -14,6 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 
     builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
     builder.Services.AddScoped<IGradeService,GradeService>();
+    builder.Services.AddScoped<ISubjectService, SubjectService>();
 
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();

@@ -3,6 +3,7 @@
     public interface IUnitOfWork
     {
         IGradeRepository Grade { get; }
+        ISubjectRepository Subject { get; }
         Task<int> SaveAsync();
     }
 }
