@@ -14,6 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 
     builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
     builder.Services.AddScoped<IGradeService,GradeService>();
+    builder.Services.AddScoped<ISubjectService, SubjectService>();
 
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
@@ -26,6 +27,7 @@ var app = builder.Build();
         app.UseSwagger();
         app.UseSwaggerUI();
     }
+    app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
     app.UseHttpsRedirection();
 
