@@ -9,17 +9,21 @@ namespace SchoolApi.Controllers
     public class SeedController : ControllerBase
     {
         private readonly IUserSeeder _userSeeder;
+
         public SeedController(IUserSeeder userSeeder)
         {
             _userSeeder = userSeeder;
         }
 
         [HttpPost]
-        public async Task<IActionResult> SeedAdminUser() {
-            try {
+        public async Task<IActionResult> SeedAdminUser() 
+        {
+            try 
+            {
                 await _userSeeder.SeedAdminuser();
                 return Ok("Admin user seeded successfully. ");
-            } catch(Exception ex) {
+            } 
+            catch(Exception ex) {
                 return BadRequest(ex.Message);
             }
         }

@@ -38,7 +38,6 @@ namespace SchoolApi.Seeder
                     UserRole = UserRole.Admin,
                     Password = "@Admin123"
                 };
-
                 await _userService.Create(userDto);
             }
             else
