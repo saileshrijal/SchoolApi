@@ -7,6 +7,8 @@ using SchoolApi.Data;
 using SchoolApi.Manager;
 using SchoolApi.Manager.Interface;
 using SchoolApi.Models;
+using SchoolApi.Repository;
+using SchoolApi.Repository.Interface;
 using SchoolApi.Seeder;
 using SchoolApi.Seeder.Interface;
 using SchoolApi.Services;
@@ -48,9 +50,19 @@ var builder = WebApplication.CreateBuilder(args);
         };
     });
 
+    //services
     builder.Services.AddScoped<IUserService, UserService>();
     builder.Services.AddScoped<IUserSeeder, UserSeeder>();
     builder.Services.AddScoped<IAuthManager, AuthManager >();
+    builder.Services.AddScoped<IGradeService, GradeService>();
+    builder.Services.AddScoped<ISubjectService, SubjectService>();
+
+    //repositories
+    builder.Services.AddScoped<ISubjectRepository, SubjectRepository>();
+    builder.Services.AddScoped<IGradeRepository, GradeRepository>();
+    builder.Services.AddScoped<ISubjectGradeRepository, SubjectGradeRepository>();
+    builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
 }
 
 

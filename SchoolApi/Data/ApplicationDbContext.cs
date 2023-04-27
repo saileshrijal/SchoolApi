@@ -12,5 +12,8 @@ namespace SchoolApi.Data
         }
         public DbSet<Parent>? Parents { get; set; }
         public DbSet<ApplicationUser>? ApplicationUsers { get; set; }
+        public DbSet<Subject>? Subjects { get; set; }
+        public DbSet<Grade>? Grades { get; set; }
+        public DbSet<SubjectGrade>? SubjectGrades { get; set; }
     }
 }
