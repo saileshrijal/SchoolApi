@@ -82,14 +82,37 @@ namespace SchoolApi.Controllers
             try
             {
                 var listOfSubjects = await _subjectRepository.GetAll();
-                var subjectListvm = listOfSubjects.Select(x => new SubjectVM()
+                var results = listOfSubjects.Select(x => new
                 {
-                    Id = x.Id,
-                    Name = x.Name,
-                    Code = x.Code,
-                    Description = x.Description,
+                    x.Id,
+                    x.Name,
+                    x.Code,
+                    x.Description,
+                    x.CreatedAt
                 });
-                return Ok(subjectListvm);
+                return Ok(results);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            try
+            {
+                var subject = await _subjectRepository.GetById(id);
+                var result = new
+                {
+                    subject.Id,
+                    subject.Name,
+                    subject.Code,
+                    subject.Description,
+                    subject.CreatedAt
+                };
+                return Ok(result);
             }
             catch (Exception ex)
             {

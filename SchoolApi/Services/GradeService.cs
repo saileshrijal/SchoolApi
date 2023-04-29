@@ -20,6 +20,7 @@ namespace SchoolApi.Services
             var grade = new Grade {
                 Name = gradeDto.Name,
                 Description = gradeDto.Description,
+                CreatedAt = DateTime.Now,
             };
             await _unitOfWork.CreateAsync(grade);
             await _unitOfWork.CommitAsync();
@@ -43,7 +44,7 @@ namespace SchoolApi.Services
         public async Task AssignSubjectsToGrade(int gradeId, List<int> subjectIds) {
             var grade = await _gradeRepository.GetGradeWithSubjects(gradeId);
 
-            grade.SubjectsGrade = subjectIds.Select(x => new SubjectGrade
+            grade.SubjectGrades = subjectIds.Select(x => new SubjectGrade
             {
                 SubjectId = x,
                 GradeId = gradeId

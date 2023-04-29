@@ -1,5 +1,4 @@
-﻿using PagedList;
-using SchoolApi.Models;
+﻿using SchoolApi.Models;
 
 namespace SchoolApi.Repository.Interface
 {

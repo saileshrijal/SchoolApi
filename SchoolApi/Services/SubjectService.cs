@@ -22,6 +22,7 @@ namespace SchoolApi.Services
                 Name = subjectDto.Name,
                 Code = subjectDto.Code,
                 Description = subjectDto.Description,
+                CreatedAt = DateTime.Now
             };
             await _unitOfWork.CreateAsync(subject);
             await _unitOfWork.CommitAsync();

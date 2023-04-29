@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using SchoolApi.Repository.Interface;
 using SchoolApi.Services.Interface;
 using SchoolApi.ViewModels;
@@ -20,16 +21,14 @@ namespace SchoolApi.Controllers
             _subjectRepository = subjectRepository;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Assign(int id, AssignSubjectVM vm)
+        [HttpPost("{gradeId}")]
+        public async Task<IActionResult> Assign(int gradeId, AssignSubjectVM vm)
         {
             if (!ModelState.IsValid) { return BadRequest("not valid"); }
-
             try
             {
-                await _gradeService.AssignSubjectsToGrade(id, vm.SubjectIds!);
+                await _gradeService.AssignSubjectsToGrade(gradeId, vm.SubjectIds!);
                 return Ok("subjects assign to grade");
-
             }
             catch (Exception ex)
             {
@@ -38,48 +37,63 @@ namespace SchoolApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllGradeWithSubjects()
+        public async Task<IActionResult> GetAllGradesWithSubjects()
         {
-            var gradesWithSubjects = await _gradeRepository.GetAllGradesWithSubjects();
-            var result = gradesWithSubjects.Select(g => new
+            try
             {
-                Grade = new {
-                    g.Id,
-                    g.Name,
-                    g.Description,
-                },
-                Subjects = g.SubjectsGrade!.Select(s => new { s.Subject!.Id, s.Subject.Name, s.Subject.Description })
-            });
+                var gradesWithSubjects = await _gradeRepository.GetAllGradesWithSubjects();
+                var result = gradesWithSubjects.Select(g => new
+                {
+                    Grade = new
+                    {
+                        g.Id,
+                        g.Name,
+                        g.Description,
+                    },
+                    Subjects = g.SubjectGrades!.Select(s => new { s.Subject!.Id, s.Subject.Name, s.Subject.Description })
+                });
 
-            return Ok(result);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetGradeWithSubjectsById(int id)
         {
-            var gradesWithSubjects = await _gradeRepository.GetGradeWithSubjects(id);
-            if (gradesWithSubjects == null)
+            try
             {
-                return BadRequest("Not found");
+                var gradesWithSubjects = await _gradeRepository.GetGradeWithSubjects(id);
+                if (gradesWithSubjects == null)
+                {
+                    return BadRequest("Not found");
+                }
+
+                var result = new
+                {
+                    Grade = new
+                    {
+                        gradesWithSubjects.Id,
+                        gradesWithSubjects.Name,
+                        gradesWithSubjects.Description,
+                    },
+                    Subjects = gradesWithSubjects.SubjectGrades!.Select(sg => new
+                    {
+                        sg.Subject!.Id,
+                        sg.Subject.Name,
+                        sg.Subject.Description
+                    })
+                };
+
+                return Ok(result);
             }
-
-            var result = new
+            catch (Exception ex)
             {
-                Grade = new
-                {
-                    gradesWithSubjects.Id,
-                    gradesWithSubjects.Name,
-                    gradesWithSubjects.Description,
-                },
-                Subjects = gradesWithSubjects.SubjectsGrade!.Select(sg => new
-                {
-                    sg.Subject!.Id,
-                    sg.Subject.Name,
-                    sg.Subject.Description
-                })
-            };
-
-            return Ok(result);
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

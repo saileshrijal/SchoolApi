@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SchoolApi.Dtos;
+using SchoolApi.Models;
 using SchoolApi.Repository.Interface;
 using SchoolApi.Services.Interface;
 using SchoolApi.ViewModels;
@@ -71,15 +72,35 @@ namespace SchoolApi.Controllers
             try
             {
                 var listOfGrades = await _gradeRepository.GetAll();
-                var gradeListVm = listOfGrades.Select(x => new GradeVM()
+                var results = listOfGrades.Select(x => new
                 {
-                    Id = x.Id,
-                    Name = x.Name,
-                    Description = x.Description,
+                    x.Id,
+                    x.Name,
+                    x.Description,
                 });
-                return Ok(gradeListVm); 
+                return Ok(results); 
             }catch (Exception ex) {
                 return BadRequest(ex.Message);  
+            }
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            try
+            {
+                var grade = await _gradeRepository.GetById(id);
+                var result = new
+                {
+                    grade.Id,
+                    grade.Name,
+                    grade.Description
+                };
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
 

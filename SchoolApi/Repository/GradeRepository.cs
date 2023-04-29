@@ -13,11 +13,12 @@ namespace SchoolApi.Repository
         }
         public async Task<List<Grade>> GetAllGradesWithSubjects()
         {
-            return await _context.Grades!.Include(x => x.SubjectsGrade)!.ThenInclude(x => x.Subject).OrderByDescending(x => x.CreatedAt).ToListAsync();
+            return await _context.Grades!.Include(x => x.SubjectGrades)!.ThenInclude(x => x.Subject).OrderByDescending(x => x.CreatedAt).ToListAsync();
         }
+
         public async Task<Grade> GetGradeWithSubjects(int id)
         {
-            return await _context.Grades!.Include(x => x.SubjectsGrade)!.ThenInclude(x => x.Subject)!.FirstOrDefaultAsync(x => x.Id == id)??throw new Exception("Not Found");
+            return await _context.Grades!.Include(x => x.SubjectGrades)!.ThenInclude(x => x.Subject)!.FirstOrDefaultAsync(x => x.Id == id) ?? throw new Exception("Not Found");
         }
     }
 }
