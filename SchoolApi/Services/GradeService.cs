@@ -42,13 +42,11 @@ namespace SchoolApi.Services
 
         public async Task AssignSubjectsToGrade(int gradeId, List<int> subjectIds) {
             var grade = await _gradeRepository.GetGradeWithSubjects(gradeId);
-      
-            //grade=grade list<subjectGrades> 
 
-            grade.SubjectGrades = subjectIds.Select(x => new SubjectGrade
+            grade.SubjectsGrade = subjectIds.Select(x => new SubjectGrade
             {
-                SubjectID = x,
-                GradeID = gradeId
+                SubjectId = x,
+                GradeId = gradeId
             }).ToList();
 
             await _unitOfWork.CommitAsync();

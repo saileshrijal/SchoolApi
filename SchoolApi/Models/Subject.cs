@@ -8,6 +8,6 @@
         public string? Description { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
-        public List<SubjectGrade>? SubjectGrades { get; set; }
+        public List<SubjectGrade>? SubjectsGrade { get; set; }
     }
 }

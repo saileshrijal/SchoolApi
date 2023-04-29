@@ -11,13 +11,5 @@ namespace SchoolApi.Repository
         {
             
         }
-        public async Task<List<SubjectGrade>> GetSubjectGrades()
-        {
-            return await _context.SubjectGrades!.Include(s => s.Grade).Include(s => s.Subject).ToListAsync();
-        }
-
-        public async Task<List<Subject>> GetSubjectsByGradeId(int gradeId) {
-            return await _context.SubjectGrades!.Where(s => s.GradeID == gradeId)!.Select(s => s.Subject)!.ToListAsync();
-        }
     }
 }
