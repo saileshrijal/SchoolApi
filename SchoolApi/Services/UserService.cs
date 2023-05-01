@@ -37,8 +37,7 @@ namespace SchoolApi.Services
             {
                 UserName = userDto.UserName,
                 Email = userDto.Email,
-                FirstName = userDto.FirstName,
-                LastName = userDto.LastName,
+                FullName = userDto.FullName,
                 CreatedDate = DateTime.UtcNow,
                 Status = userDto.Status
             };
@@ -57,16 +56,14 @@ namespace SchoolApi.Services
 
         public async Task<ApplicationUser> Update(string id, UserDto userDto) {
             var user = await _userManager.FindByIdAsync(id) ?? throw new Exception("User not found");
-            user.FirstName = userDto.FirstName;
-            user.LastName = userDto.LastName;
+            user.FullName = userDto.FullName;
             await _userManager.UpdateAsync(user);
             return user;
         }
 
         public async Task UpdateProfile(UpdateProfileDto updateProfileDto) {
             var user = await _userManager.FindByIdAsync(updateProfileDto.UserId!) ?? throw new Exception("User not found");
-            user.FirstName = updateProfileDto.FirstName;
-            user.LastName = updateProfileDto.LastName;
+            user.FullName = updateProfileDto.FirstName;
             await _userManager.UpdateAsync(user);
         }
 

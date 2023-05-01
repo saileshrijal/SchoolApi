@@ -324,16 +324,37 @@ namespace SchoolApi.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("FirstName")
+                    b.Property<DateTime>("DateOfBirth")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FullName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("LastName")
+                    b.Property<string>("ProfilePictureUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
 
                     b.HasDiscriminator().HasValue("ApplicationUser");
+                });
+
+            modelBuilder.Entity("SchoolApi.Models.Teacher", b =>
+                {
+                    b.HasBaseType("SchoolApi.Models.ApplicationUser");
+
+                    b.Property<string>("Designation")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("GradeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TeachingLevel")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasIndex("GradeId");
+
+                    b.HasDiscriminator().HasValue("Teacher");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -390,13 +411,13 @@ namespace SchoolApi.Migrations
             modelBuilder.Entity("SchoolApi.Models.SubjectGrade", b =>
                 {
                     b.HasOne("SchoolApi.Models.Grade", "Grade")
-                        .WithMany("SubjectsGrade")
+                        .WithMany("SubjectGrades")
                         .HasForeignKey("GradeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("SchoolApi.Models.Subject", "Subject")
-                        .WithMany("SubjectsGrade")
+                        .WithMany("SubjectGrades")
                         .HasForeignKey("SubjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -406,14 +427,23 @@ namespace SchoolApi.Migrations
                     b.Navigation("Subject");
                 });
 
+            modelBuilder.Entity("SchoolApi.Models.Teacher", b =>
+                {
+                    b.HasOne("SchoolApi.Models.Grade", "Grade")
+                        .WithMany()
+                        .HasForeignKey("GradeId");
+
+                    b.Navigation("Grade");
+                });
+
             modelBuilder.Entity("SchoolApi.Models.Grade", b =>
                 {
-                    b.Navigation("SubjectsGrade");
+                    b.Navigation("SubjectGrades");
                 });
 
             modelBuilder.Entity("SchoolApi.Models.Subject", b =>
                 {
-                    b.Navigation("SubjectsGrade");
+                    b.Navigation("SubjectGrades");
                 });
 #pragma warning restore 612, 618
         }

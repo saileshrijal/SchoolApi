@@ -62,8 +62,7 @@ namespace SchoolApi.Manager
             {
                 Success = true,
                 Token = GenerateToken(user),
-                FirstName = user.FirstName,
-                LastName = user.LastName,
+                FullName = user.FullName,
                 Email = user.Email,
                 UserId = user.Id,
                 UserName = user.UserName,

@@ -27,13 +27,13 @@ namespace SchoolApi.Seeder
             {
                 await _roleManager.CreateAsync(new IdentityRole(UserRole.Admin));
                 await _roleManager.CreateAsync(new IdentityRole(UserRole.User));
+                await _roleManager.CreateAsync(new IdentityRole(UserRole.Teacher));
 
                 var userDto = new UserDto()
                 {
                     UserName = "admin",
                     Email = "admin@gmail.com",
-                    FirstName = "Admin",
-                    LastName = "Admin",
+                    FullName = "Super Admin",
                     Status = true,
                     UserRole = UserRole.Admin,
                     Password = "@Admin123"

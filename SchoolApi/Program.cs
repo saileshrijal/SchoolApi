@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using SchoolApi.Config;
 using SchoolApi.Data;
+using SchoolApi.Helpers;
+using SchoolApi.Helpers.Interface;
 using SchoolApi.Manager;
 using SchoolApi.Manager.Interface;
 using SchoolApi.Models;
@@ -56,11 +58,14 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddScoped<IAuthManager, AuthManager >();
     builder.Services.AddScoped<IGradeService, GradeService>();
     builder.Services.AddScoped<ISubjectService, SubjectService>();
+    builder.Services.AddScoped<ITeacherService, TeacherService>();
+    builder.Services.AddScoped<IFileHelper, FileHelper>();
 
     //repositories
     builder.Services.AddScoped<ISubjectRepository, SubjectRepository>();
     builder.Services.AddScoped<IGradeRepository, GradeRepository>();
     builder.Services.AddScoped<ISubjectGradeRepository, SubjectGradeRepository>();
+    builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
     builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 }
@@ -74,8 +79,11 @@ var app = builder.Build();
         app.UseSwagger();
         app.UseSwaggerUI();
     }
+    app.UseStaticFiles();
 
     app.UseHttpsRedirection();
+
+    app.UseAuthentication();
 
     app.UseAuthorization();
 

@@ -3,10 +3,9 @@ namespace SchoolApi.ViewModels
 {
     public class UserVM
     {
-        [Required(ErrorMessage = "First Name is required")]
-        public string? FirstName { get; set; }
-        [Required(ErrorMessage = "Last Name is required")]
-        public string? LastName { get; set; }
+        [Required(ErrorMessage = "Name is required")]
+        public string? FullName { get; set; }
+
 
         [Required(ErrorMessage = "Username is required")]
         public string? UserName { get; set; }

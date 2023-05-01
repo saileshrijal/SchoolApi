@@ -15,5 +15,6 @@ namespace SchoolApi.Data
         public DbSet<Subject>? Subjects { get; set; }
         public DbSet<Grade>? Grades { get; set; }
         public DbSet<SubjectGrade>? SubjectGrades { get; set; }
+        public DbSet<Teacher>? Teachders { get; set; }
     }
 }

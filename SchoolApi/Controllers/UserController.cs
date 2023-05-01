@@ -30,8 +30,7 @@ namespace SchoolApi.Controllers
             var users = await _userManager.GetUsersInRoleAsync(UserRole.User);
             var result = users.Select(x => new { 
                 x.Id,
-                x.FirstName, 
-                x.LastName,
+                x.FullName, 
                 x.UserName,
                 x.Email,
                 x.Status,
@@ -50,8 +49,7 @@ namespace SchoolApi.Controllers
                 var result = new
                 {
                     user!.Id,
-                    user.FirstName,
-                    user.LastName,
+                    user.FullName,
                     user.UserName,
                     user.Email,
                     user.Status,
@@ -72,8 +70,7 @@ namespace SchoolApi.Controllers
             {
                 var userDto = new UserDto
                 {
-                    FirstName = vm.FirstName,
-                    LastName = vm.LastName,
+                    FullName = vm.FullName,
                     UserName = vm.UserName,
                     Email = vm.Email,
                     Password = vm.Password,
@@ -95,8 +92,7 @@ namespace SchoolApi.Controllers
             {
                 var userDto = new UserDto
                 {
-                    FirstName = vm.FirstName,
-                    LastName = vm.LastName
+                    FullName = vm.FirstName,
                 };
                 await _userService.Update(id, userDto);
                 return Ok();
@@ -167,8 +163,7 @@ namespace SchoolApi.Controllers
                 var currentUser = await CurrentUser();
                 var result = new
                 {
-                    currentUser.FirstName,
-                    currentUser.LastName,
+                    currentUser.FullName,
                     currentUser.Email,
                     currentUser.UserName,
                 };
