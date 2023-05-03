@@ -10,5 +10,6 @@ namespace SchoolApi.Models
         public DateTime CreatedDate { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string? ProfilePictureUrl { get; set; }
+
     }
 }

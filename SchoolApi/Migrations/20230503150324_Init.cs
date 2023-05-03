@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SchoolApi.Migrations
 {
     /// <inheritdoc />
-    public partial class initialmigration : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -89,11 +89,10 @@ namespace SchoolApi.Migrations
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ProfilePictureUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ParentId = table.Column<int>(type: "int", nullable: true),
-                    ParentId1 = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    GradeId = table.Column<int>(type: "int", nullable: true),
                     Designation = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TeachingLevel = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    GradeId = table.Column<int>(type: "int", nullable: true),
+                    Teacher_GradeId = table.Column<int>(type: "int", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -113,13 +112,14 @@ namespace SchoolApi.Migrations
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AspNetUsers_AspNetUsers_ParentId1",
-                        column: x => x.ParentId1,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                    table.ForeignKey(
                         name: "FK_AspNetUsers_Grades_GradeId",
                         column: x => x.GradeId,
+                        principalTable: "Grades",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AspNetUsers_Grades_Teacher_GradeId",
+                        column: x => x.Teacher_GradeId,
                         principalTable: "Grades",
                         principalColumn: "Id");
                 });
@@ -235,6 +235,30 @@ namespace SchoolApi.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "ParentStudents",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StudentId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    ParentId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ParentStudents", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ParentStudents_AspNetUsers_ParentId",
+                        column: x => x.ParentId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_ParentStudents_AspNetUsers_StudentId",
+                        column: x => x.StudentId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -273,9 +297,9 @@ namespace SchoolApi.Migrations
                 column: "GradeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUsers_ParentId1",
+                name: "IX_AspNetUsers_Teacher_GradeId",
                 table: "AspNetUsers",
-                column: "ParentId1");
+                column: "Teacher_GradeId");
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
@@ -283,6 +307,16 @@ namespace SchoolApi.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ParentStudents_ParentId",
+                table: "ParentStudents",
+                column: "ParentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ParentStudents_StudentId",
+                table: "ParentStudents",
+                column: "StudentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SubjectGrades_GradeId",
@@ -312,6 +346,9 @@ namespace SchoolApi.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "ParentStudents");
 
             migrationBuilder.DropTable(
                 name: "SubjectGrades");

@@ -26,8 +26,10 @@ namespace SchoolApi.Services
                 FullName = parentDto.FullName,
                 Address = parentDto.Address,
                 PhoneNumber = parentDto.PhoneNumber,
+                Status = true,
+                CreatedDate = DateTime.Now
             };
-            await _userManager.CreateAsync(parent,parentDto.Password!);
+            await _userManager.CreateAsync(parent, parentDto.Password!);
             await _userManager.AddToRoleAsync(parent, UserRole.Parent);
             tx.Complete();
         }

@@ -30,6 +30,7 @@ namespace SchoolApi.Seeder
                 await _roleManager.CreateAsync(new IdentityRole(UserRole.Teacher));
                 await _roleManager.CreateAsync(new IdentityRole(UserRole.Parent));
                 await _roleManager.CreateAsync(new IdentityRole(UserRole.Parent));
+                await _roleManager.CreateAsync(new IdentityRole(UserRole.Student));
 
                 var userDto = new UserDto()
                 {

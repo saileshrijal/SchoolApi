@@ -32,14 +32,24 @@ namespace SchoolApi.Controllers
                 {
                     if(!await _parentRepository.IsAnyById(item))
                     {
-                        return BadRequest(ModelState);
+                        return BadRequest($"Parent Id: {item} does not Exists");
                     }
                 }
                 var studentDto = new StudentDto
                 {
-                   
+                   UserName = vm.UserName,
+                   FullName = vm.FullName,
+                   Address = vm.Address,
+                   Email = vm.Email,
+                   ParentIds = vm.ParentIds,
+                   GradeId = vm.GradeId,
+                   Password = vm.Password,
+                   DateOfBirth = vm.DateOfBirth,
+                   PhoneNumber = vm.PhoneNumber
                 };
-              
+
+
+
                 await _studentService.Create(studentDto);
                 return Ok();
             }

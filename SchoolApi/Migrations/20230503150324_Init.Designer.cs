@@ -12,8 +12,8 @@ using SchoolApi.Data;
 namespace SchoolApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230502160635_init")]
-    partial class init
+    [Migration("20230503150324_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -253,6 +253,29 @@ namespace SchoolApi.Migrations
                     b.ToTable("Grades");
                 });
 
+            modelBuilder.Entity("SchoolApi.Models.ParentStudent", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ParentId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("StudentId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("ParentStudents");
+                });
+
             modelBuilder.Entity("SchoolApi.Models.Subject", b =>
                 {
                     b.Property<int>("Id")
@@ -337,13 +360,10 @@ namespace SchoolApi.Migrations
                 {
                     b.HasBaseType("SchoolApi.Models.ApplicationUser");
 
-                    b.Property<int>("ParentId")
+                    b.Property<int>("GradeId")
                         .HasColumnType("int");
 
-                    b.Property<string>("ParentId1")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasIndex("ParentId1");
+                    b.HasIndex("GradeId");
 
                     b.HasDiscriminator().HasValue("Student");
                 });
@@ -362,6 +382,12 @@ namespace SchoolApi.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasIndex("GradeId");
+
+                    b.ToTable("AspNetUsers", t =>
+                        {
+                            t.Property("GradeId")
+                                .HasColumnName("Teacher_GradeId");
+                        });
 
                     b.HasDiscriminator().HasValue("Teacher");
                 });
@@ -417,6 +443,21 @@ namespace SchoolApi.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("SchoolApi.Models.ParentStudent", b =>
+                {
+                    b.HasOne("SchoolApi.Models.Parent", "Parent")
+                        .WithMany("ParentStudents")
+                        .HasForeignKey("ParentId");
+
+                    b.HasOne("SchoolApi.Models.Student", "Student")
+                        .WithMany("ParentStudents")
+                        .HasForeignKey("StudentId");
+
+                    b.Navigation("Parent");
+
+                    b.Navigation("Student");
+                });
+
             modelBuilder.Entity("SchoolApi.Models.SubjectGrade", b =>
                 {
                     b.HasOne("SchoolApi.Models.Grade", "Grade")
@@ -438,11 +479,13 @@ namespace SchoolApi.Migrations
 
             modelBuilder.Entity("SchoolApi.Models.Student", b =>
                 {
-                    b.HasOne("SchoolApi.Models.Parent", "Parent")
-                        .WithMany("Students")
-                        .HasForeignKey("ParentId1");
+                    b.HasOne("SchoolApi.Models.Grade", "Grade")
+                        .WithMany()
+                        .HasForeignKey("GradeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Parent");
+                    b.Navigation("Grade");
                 });
 
             modelBuilder.Entity("SchoolApi.Models.Teacher", b =>
@@ -466,7 +509,12 @@ namespace SchoolApi.Migrations
 
             modelBuilder.Entity("SchoolApi.Models.Parent", b =>
                 {
-                    b.Navigation("Students");
+                    b.Navigation("ParentStudents");
+                });
+
+            modelBuilder.Entity("SchoolApi.Models.Student", b =>
+                {
+                    b.Navigation("ParentStudents");
                 });
 #pragma warning restore 612, 618
         }
