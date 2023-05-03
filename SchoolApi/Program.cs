@@ -59,15 +59,16 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddScoped<IGradeService, GradeService>();
     builder.Services.AddScoped<ISubjectService, SubjectService>();
     builder.Services.AddScoped<ITeacherService, TeacherService>();
+    builder.Services.AddScoped<IParentService, ParentService>();
     builder.Services.AddScoped<IFileHelper, FileHelper>();
-
+   
     //repositories
     builder.Services.AddScoped<ISubjectRepository, SubjectRepository>();
     builder.Services.AddScoped<IGradeRepository, GradeRepository>();
     builder.Services.AddScoped<ISubjectGradeRepository, SubjectGradeRepository>();
     builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
+    builder.Services.AddScoped<IParentRepository, ParentRepository>();
     builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-
 }
 
 

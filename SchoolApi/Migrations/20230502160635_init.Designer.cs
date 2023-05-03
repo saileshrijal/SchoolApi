@@ -12,8 +12,8 @@ using SchoolApi.Data;
 namespace SchoolApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230501060515_Initial")]
-    partial class Initial
+    [Migration("20230502160635_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -253,25 +253,6 @@ namespace SchoolApi.Migrations
                     b.ToTable("Grades");
                 });
 
-            modelBuilder.Entity("SchoolApi.Models.Parent", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Phone")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Parents");
-                });
-
             modelBuilder.Entity("SchoolApi.Models.Subject", b =>
                 {
                     b.Property<int>("Id")
@@ -324,6 +305,9 @@ namespace SchoolApi.Migrations
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
@@ -340,6 +324,28 @@ namespace SchoolApi.Migrations
                         .HasColumnType("bit");
 
                     b.HasDiscriminator().HasValue("ApplicationUser");
+                });
+
+            modelBuilder.Entity("SchoolApi.Models.Parent", b =>
+                {
+                    b.HasBaseType("SchoolApi.Models.ApplicationUser");
+
+                    b.HasDiscriminator().HasValue("Parent");
+                });
+
+            modelBuilder.Entity("SchoolApi.Models.Student", b =>
+                {
+                    b.HasBaseType("SchoolApi.Models.ApplicationUser");
+
+                    b.Property<int>("ParentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ParentId1")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasIndex("ParentId1");
+
+                    b.HasDiscriminator().HasValue("Student");
                 });
 
             modelBuilder.Entity("SchoolApi.Models.Teacher", b =>
@@ -430,6 +436,15 @@ namespace SchoolApi.Migrations
                     b.Navigation("Subject");
                 });
 
+            modelBuilder.Entity("SchoolApi.Models.Student", b =>
+                {
+                    b.HasOne("SchoolApi.Models.Parent", "Parent")
+                        .WithMany("Students")
+                        .HasForeignKey("ParentId1");
+
+                    b.Navigation("Parent");
+                });
+
             modelBuilder.Entity("SchoolApi.Models.Teacher", b =>
                 {
                     b.HasOne("SchoolApi.Models.Grade", "Grade")
@@ -447,6 +462,11 @@ namespace SchoolApi.Migrations
             modelBuilder.Entity("SchoolApi.Models.Subject", b =>
                 {
                     b.Navigation("SubjectGrades");
+                });
+
+            modelBuilder.Entity("SchoolApi.Models.Parent", b =>
+                {
+                    b.Navigation("Students");
                 });
 #pragma warning restore 612, 618
         }

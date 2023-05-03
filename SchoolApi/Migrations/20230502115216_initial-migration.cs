@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SchoolApi.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class initialmigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -38,20 +38,6 @@ namespace SchoolApi.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Grades", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Parents",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Parents", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -99,9 +85,12 @@ namespace SchoolApi.Migrations
                     Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<bool>(type: "bit", nullable: true),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ProfilePictureUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ParentId = table.Column<int>(type: "int", nullable: true),
+                    ParentId1 = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Designation = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TeachingLevel = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     GradeId = table.Column<int>(type: "int", nullable: true),
@@ -123,6 +112,11 @@ namespace SchoolApi.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetUsers_AspNetUsers_ParentId1",
+                        column: x => x.ParentId1,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_AspNetUsers_Grades_GradeId",
                         column: x => x.GradeId,
@@ -279,6 +273,11 @@ namespace SchoolApi.Migrations
                 column: "GradeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_ParentId1",
+                table: "AspNetUsers",
+                column: "ParentId1");
+
+            migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
@@ -313,9 +312,6 @@ namespace SchoolApi.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
-
-            migrationBuilder.DropTable(
-                name: "Parents");
 
             migrationBuilder.DropTable(
                 name: "SubjectGrades");
