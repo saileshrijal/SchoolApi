@@ -6,6 +6,7 @@ namespace SchoolApi.Models
     {
         public string? FullName { get; set;}
         public bool Status { get; set; }
+        public string? Address { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string? ProfilePictureUrl { get; set; }
