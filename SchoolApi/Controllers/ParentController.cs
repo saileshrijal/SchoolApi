@@ -47,7 +47,7 @@ namespace SchoolApi.Controllers
         {
             try
             {
-                var listOfParents = await _parentRepository.GetAll();
+                var listOfParents = await _parentRepository.GetAllParents();
                 var results = listOfParents.Select(x => new
                 {
                     x.Id,
@@ -56,6 +56,11 @@ namespace SchoolApi.Controllers
                     x.FullName,
                     x.Address,
                     x.PhoneNumber,
+                    Students = x.ParentStudents!.Select(x => new
+                    {
+                        x.Student!.Id,
+                        x.Student.FullName,
+                    })
                 });
                 return Ok(results);
             }

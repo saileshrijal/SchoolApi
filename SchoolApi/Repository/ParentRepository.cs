@@ -12,6 +12,14 @@ namespace SchoolApi.Repository
             
         }
 
+        public async Task<List<Parent>> GetAllParents()
+        {
+            return await _context.Parents!
+                                .Include(x=>x.ParentStudents)!
+                                .ThenInclude(x=>x.Student)
+                                .ToListAsync();
+        }
+
         public async Task<bool> IsAnyById(string id)
         {
             return await _context.Parents!.AnyAsync(x => x.Id == id);
