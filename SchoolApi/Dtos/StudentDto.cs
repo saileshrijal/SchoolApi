@@ -11,5 +11,6 @@
         public List<string>? ParentIds { get; set; }
         public int GradeId { get; set; }
         public string? PhoneNumber { get; set; }
+        public string? ProfilePictureUrl { get; set; }
     }
 }

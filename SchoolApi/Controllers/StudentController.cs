@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SchoolApi.Dtos;
+using SchoolApi.Helpers;
+using SchoolApi.Helpers.Interface;
 using SchoolApi.Repository.Interface;
 using SchoolApi.Services;
 using SchoolApi.Services.Interface;
@@ -13,13 +15,44 @@ namespace SchoolApi.Controllers
     public class StudentController : ControllerBase
     {
         private readonly IStudentService _studentService;
-        private readonly ITeacherRepository _teacherRepository;
+        private readonly IStudentRepository _studentRepository;
         private readonly IParentRepository _parentRepository;
-        public StudentController(IStudentService studentService, ITeacherRepository teacherRepository, IParentRepository parentRepository)
+        private readonly IFileHelper _fileHelper;
+        public StudentController(IStudentService studentService, IStudentRepository studentRepository, IParentRepository parentRepository, IFileHelper fileHelper)
         {
             _studentService = studentService;
-            _teacherRepository = teacherRepository;
+            _studentRepository = studentRepository;
             _parentRepository = parentRepository;
+            _fileHelper = fileHelper;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var students = await _studentRepository.GetAllStudents();
+            var results = students.Select(x => new
+            {
+                x.Id,
+                x.FullName,
+                x.Status,
+                x.CreatedDate,
+                x.DateOfBirth,
+                x.ProfilePictureUrl,
+                x.UserName,
+                x.Email,
+                x.PhoneNumber,
+                Grade = new
+                {
+                    x.Grade!.Id,
+                    x.Grade.Name,
+                },
+                Parents = x.ParentStudents!.Select(x => new
+                {
+                    x.Parent!.Id,
+                    x.Parent.FullName,
+                })
+            });
+            return Ok(results);
         }
 
         [HttpPost]
@@ -47,9 +80,10 @@ namespace SchoolApi.Controllers
                    DateOfBirth = vm.DateOfBirth,
                    PhoneNumber = vm.PhoneNumber
                 };
-
-
-
+                if (vm.ProfilePicture != null)
+                {
+                    studentDto.ProfilePictureUrl = await _fileHelper.UploadFile(vm.ProfilePicture, "teachers");
+                }
                 await _studentService.Create(studentDto);
                 return Ok();
             }

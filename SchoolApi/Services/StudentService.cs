@@ -46,6 +46,10 @@ namespace SchoolApi.Services
                     StudentId = student.Id
                 }).ToList();
             }
+            if (studentDto.ProfilePictureUrl != null)
+            {
+                student.ProfilePictureUrl = studentDto.ProfilePictureUrl;
+            }
             await _userManager.CreateAsync(student);
             await _userManager.AddToRoleAsync(student, UserRole.Student);
             tx.Complete();

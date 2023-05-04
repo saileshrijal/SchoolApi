@@ -19,5 +19,6 @@ namespace SchoolApi.ViewModels
         public List<string>? ParentIds { get; set; }
         [Required(ErrorMessage = "Password is required")]
         public string? Password { get; set; }
+        public IFormFile? ProfilePicture { get; set; }
     }
 }
