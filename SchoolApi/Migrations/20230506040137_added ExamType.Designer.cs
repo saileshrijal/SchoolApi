@@ -12,8 +12,8 @@ using SchoolApi.Data;
 namespace SchoolApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230503150324_Init")]
-    partial class Init
+    [Migration("20230506040137_added ExamType")]
+    partial class addedExamType
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -229,6 +229,25 @@ namespace SchoolApi.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("SchoolApi.Models.ExamType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ExamTypes");
                 });
 
             modelBuilder.Entity("SchoolApi.Models.Grade", b =>

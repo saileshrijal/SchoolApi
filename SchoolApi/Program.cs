@@ -61,7 +61,9 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddScoped<ITeacherService, TeacherService>();
     builder.Services.AddScoped<IParentService, ParentService>();
     builder.Services.AddScoped<IStudentService, StudentService>();
+    builder.Services.AddScoped<IExamTypeService, ExamTypeService>();
     builder.Services.AddScoped<IFileHelper, FileHelper>();
+   
    
     //repositories
     builder.Services.AddScoped<ISubjectRepository, SubjectRepository>();
@@ -70,6 +72,7 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
     builder.Services.AddScoped<IParentRepository, ParentRepository>();
     builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+    builder.Services.AddScoped<IExamTypeRepository, ExamTypeRepository>();
     builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 }
 
