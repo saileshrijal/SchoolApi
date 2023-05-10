@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SchoolApi.Data;
 
@@ -11,9 +12,11 @@ using SchoolApi.Data;
 namespace SchoolApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230510052249_Exam model added")]
+    partial class Exammodeladded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -236,23 +239,11 @@ namespace SchoolApi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("AttendanceFrom")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("AttendanceTo")
-                        .HasColumnType("datetime2");
-
                     b.Property<int>("ExamTypeId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("ResultActive")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("SchoolDays")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
