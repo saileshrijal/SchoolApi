@@ -18,6 +18,7 @@ namespace SchoolApi.Data
         public DbSet<Parent>? Parents { get; set; }
         public DbSet<Student>? Students { get; set; }   
         public DbSet<ParentStudent>? ParentStudents{ get; set; }
-        public DbSet<ExamType>? ExamTypes { get; set; } 
+        public DbSet<ExamType>? ExamTypes { get; set; }
+        public DbSet<Exam>? Exams { get; set; } 
     }
 }

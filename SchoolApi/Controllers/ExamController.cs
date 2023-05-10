@@ -11,15 +11,61 @@ namespace SchoolApi.Controllers
     [ApiController]
     public class ExamController : ControllerBase
     {
-        private readonly IExamTypeRepository _examTypeRepository;
-        private readonly IExamTypeService _examTypeService;
+        private readonly IExamRepository _examRepository;
+        private readonly IExamService _examService;
 
-        public ExamController(IExamTypeRepository examTypeRepository, IExamTypeService examTypeService)
+        public ExamController(IExamRepository examRepository, IExamService examService)
         {
-            _examTypeRepository = examTypeRepository;
-            _examTypeService = examTypeService; 
+            _examRepository = examRepository;
+            _examService = examService; 
         }
 
-       
+        [HttpPost]
+        public async Task<IActionResult> Create(ExamVM vm)
+        {
+            try {
+                var examDto = new ExamDto { 
+                    Name = vm.Name,
+                    ExamTypeId = vm.ExamTypeId,
+                    AttendanceFrom = vm.AttendanceFrom, 
+                    AttendanceTo = vm.AttendanceTo,
+                    SchoolDays = vm.SchoolDays,
+                    ResultActive = vm.ResultActive
+                };
+                await _examService.CreateAsync(examDto);
+                return Ok("Exam created successfully");
+            
+            }catch(Exception ex) {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            try{
+                var listOfExams = await _examRepository.GetAllExams();
+                var results = listOfExams.Select(x => new
+                {
+                    x.Id,
+                    x.Name,
+                    x.AttendanceFrom,
+                    x.AttendanceTo,
+                    x.SchoolDays,
+                    x.ResultActive,
+                    ExamType = new
+                    {
+                        x.ExamType!.Id,
+                        x.ExamType.Name,
+                    }
+                }).ToList();
+
+                return Ok(results);
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
+        }
     }
 }
