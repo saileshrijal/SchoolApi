@@ -62,6 +62,7 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddScoped<IParentService, ParentService>();
     builder.Services.AddScoped<IStudentService, StudentService>();
     builder.Services.AddScoped<IExamTypeService, ExamTypeService>();
+    builder.Services.AddScoped<IExamSubjectService, ExamSubjectService>();
     builder.Services.AddScoped<IExamService, ExamService>();
     builder.Services.AddScoped<IFileHelper, FileHelper>();
    
